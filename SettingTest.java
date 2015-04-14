@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -102,7 +101,7 @@ public class SettingTest {
 	@Test 
 	public void testSettingAccountName() {
 		try{
-			driver.findElement(By.xpath("//a[contains(text(),'Coursera')]")).click();
+			driver.findElement(By.linkText("Coursera-Tes…")).click();
 		    driver.findElement(By.linkText("Settings")).click();
 		    driver.findElement(By.id("coursera-settings-name")).clear();
 		    driver.findElement(By.id("coursera-settings-name")).sendKeys("Coursera-Test");
