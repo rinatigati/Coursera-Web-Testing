@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -37,32 +38,42 @@ public class SettingTest {
 	// adding text to the "about me" of the profile
 	@Test
 	public void testProfileChangeAboutMe() {
-	    driver.findElement(By.xpath("//a[contains(text(),'Coursera')]")).click();
-	    driver.findElement(By.linkText("Profile")).click();
-	    driver.findElement(By.linkText("Edit Profile")).click();
-	    driver.findElement(By.name("bio")).clear();
-	    driver.findElement(By.name("bio")).sendKeys("This is information");
-
-		WebElement bio = driver.findElement(By.cssSelector("textarea.large"));
-		String observed = bio.getText();
-		assertEquals(observed, "This is information");
-
+		try{
+		    driver.findElement(By.xpath("//a[contains(text(),'Coursera')]")).click();
+		    driver.findElement(By.linkText("Profile")).click();
+		    driver.findElement(By.linkText("Edit Profile")).click();
+		    driver.findElement(By.name("bio")).clear();
+		    driver.findElement(By.name("bio")).sendKeys("This is information");
+	
+			WebElement bio = driver.findElement(By.cssSelector("textarea.large"));
+			String observed = bio.getText();
+			assertEquals(observed, "This is information");
+		}
+		catch (NoSuchElementException ex){
+			ex.printStackTrace();
+			fail();
+		}
 	}
 	
 	// adding text location of the user in the profile
 	@Test
 	public void testProfileChangeLocation() {
-		driver.findElement(By.xpath("//a[contains(text(),'Coursera')]")).click();
-	    driver.findElement(By.linkText("Profile")).click();
-	    driver.findElement(By.linkText("Edit Profile")).click();
-	    driver.findElement(By.id("coursera-profile-editor-location")).clear();
-	    driver.findElement(By.id("coursera-profile-editor-location")).sendKeys("Pittsburgh, PA, United States");
-	    driver.findElement(By.cssSelector("a.internal-home.btn")).click();
-
-		WebElement location = driver.findElement(By.cssSelector("span.coursera-profile-location"));
-		String observed = location.getText();
-		assertEquals(observed, "Pittsburgh, PA, United States");
-
+		try{
+			driver.findElement(By.xpath("//a[contains(text(),'Coursera')]")).click();
+		    driver.findElement(By.linkText("Profile")).click();
+		    driver.findElement(By.linkText("Edit Profile")).click();
+		    driver.findElement(By.id("coursera-profile-editor-location")).clear();
+		    driver.findElement(By.id("coursera-profile-editor-location")).sendKeys("Pittsburgh, PA, United States");
+		    driver.findElement(By.cssSelector("a.internal-home.btn")).click();
+	
+			WebElement location = driver.findElement(By.cssSelector("span.coursera-profile-location"));
+			String observed = location.getText();
+			assertEquals(observed, "Pittsburgh, PA, United States");
+		}
+		catch (NoSuchElementException ex){
+			ex.printStackTrace();
+			fail();
+		}
 	}
 	
 	// changing the timezone in the user settings. I was not sure how to test 
@@ -70,35 +81,46 @@ public class SettingTest {
 	// result because they are not populated. This form is using JQuery 
 	@Test
 	public void testSettingTimeZoneChange() {
-		driver.findElement(By.xpath("//a[contains(text(),'Coursera')]")).click();
-	    driver.findElement(By.linkText("Settings")).click();
-	    new Select(driver.findElement(By.id("coursera-settings-timezone-change"))).selectByVisibleText("New York");
-	    driver.findElement(By.cssSelector("button.btn.coursera-settings-timezone-change")).click();
-	    
-	    WebElement timeZone = driver.findElement(By.id("coursera-settings-timezone-change"));
-	    String observed = timeZone.getText();
-	    assertTrue(observed.contains("New York"));
+		try{
+			driver.findElement(By.xpath("//a[contains(text(),'Coursera')]")).click();
+		    driver.findElement(By.linkText("Settings")).click();
+		    new Select(driver.findElement(By.id("coursera-settings-timezone-change"))).selectByVisibleText("New York");
+		    driver.findElement(By.cssSelector("button.btn.coursera-settings-timezone-change")).click();
+		    
+		    WebElement timeZone = driver.findElement(By.id("coursera-settings-timezone-change"));
+		    String observed = timeZone.getText();
+		    assertTrue(observed.contains("New York"));
+		}
+		catch (NoSuchElementException ex){
+			ex.printStackTrace();
+			fail();
+		}
 	}
 	
 	// changing the account name to "Coursera-Test" and retrieving that text
 	// comparing the observed vs expected result 
 	@Test 
 	public void testSettingAccountName() {
-		driver.findElement(By.xpath("//a[contains(text(),'Coursera')]")).click();
-	    driver.findElement(By.linkText("Settings")).click();
-	    driver.findElement(By.id("coursera-settings-name")).clear();
-	    driver.findElement(By.id("coursera-settings-name")).sendKeys("Coursera-Test");
-	    driver.findElement(By.cssSelector("button.btn.coursera-settings-name-change")).click();
-	    
-	    WebElement name = driver.findElement(By.id("coursera-settings-name"));
-	    String observed = name.getAttribute("value");
-	    assertEquals(observed, "Coursera-Test");
+		try{
+			driver.findElement(By.xpath("//a[contains(text(),'Coursera')]")).click();
+		    driver.findElement(By.linkText("Settings")).click();
+		    driver.findElement(By.id("coursera-settings-name")).clear();
+		    driver.findElement(By.id("coursera-settings-name")).sendKeys("Coursera-Test");
+		    driver.findElement(By.cssSelector("button.btn.coursera-settings-name-change")).click();
+		    
+		    WebElement name = driver.findElement(By.id("coursera-settings-name"));
+		    String observed = name.getAttribute("value");
+		    assertEquals(observed, "Coursera-Test");
+		}
+		catch (NoSuchElementException ex){
+			ex.printStackTrace();
+			fail();
+		}
 	}
 	
 
 	@After
 	public void tearDown() throws Exception {
-		 driver.findElement(By.cssSelector("a.coursera-header-link.coursera-header-account")).click();
 		 List<WebElement> webList = new ArrayList<WebElement>();
 		 webList = driver.findElements(By.cssSelector("a.coursera-header-link.coursera-header-account"));
 		 webList.get(1).click();
